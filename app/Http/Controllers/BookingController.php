@@ -55,7 +55,7 @@ class BookingController extends Controller
         return redirect()->back()->with('success','Xóa đơn đặt phòng thành công');  
     }
 
-    public function susscessBooking($id){
+    public function successBooking($id){
         BookingInfor::find($id)->update(['status' => 'approved']);
         return redirect()->back()->with('success','Phòng đã được phê duyệt');
     }
