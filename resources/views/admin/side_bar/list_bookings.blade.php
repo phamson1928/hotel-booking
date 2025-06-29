@@ -55,7 +55,7 @@
                     <td>
                         <div class="d-flex">
                             <div class="row">
-                                <a style=" width: 100px;" href="{{ route('susscess_booking', $booking->id)}}" class="btn btn-success me-3">Duyệt</a>
+                                <a style=" width: 100px;" href="{{ route('success_booking', $booking->id)}}" class="btn btn-success me-3">Duyệt</a>
                                 <a style="margin-top: 10px; width: 100px;" href="{{ route('reject_booking', $booking->id)}}" class="btn btn-secondary me-3">Từ chối</a>
                             </div>
                         </div>
