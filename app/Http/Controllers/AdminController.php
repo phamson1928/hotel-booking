@@ -1,18 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
-use Illuminate\Http\Request;
-
-use App\Models\User;
-
 use Illuminate\Support\Facades\Auth;
-
 use App\Models\Room;
-
 use App\Models\Gallary;
-
 use App\Models\Contact;
+
 
 class AdminController extends Controller
 {
@@ -28,9 +21,9 @@ class AdminController extends Controller
             $contacts = Contact::all();
             return view('admin.side_bar.index', compact('contacts'));
         } else {
-            return redirect()->back()->withErrors(['error' => 'Phân quyền không hợp lệ']);
+            return redirect()->back();
         }
-        }
+    }
 
         public function home(){
             $rooms = Room::all();
@@ -45,5 +38,5 @@ class AdminController extends Controller
         public function showHomePanel(){
             $contacts = Contact::all();
             return view('admin.side_bar.index', compact('contacts'));
-        }
+    }
 }

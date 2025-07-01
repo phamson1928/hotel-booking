@@ -11,7 +11,6 @@ class RoomController extends Controller
 {
    public function addNewRoom(Request $request)
    {
-       // Validate request data
        $request->validate([
            'title' => 'required|string|max:255',
            'description' => 'required|string',
@@ -23,13 +22,11 @@ class RoomController extends Controller
        ]);
 
        try {
-           // Create upload directory if not exists
            $uploadPath = public_path('room_images');
            if (!file_exists($uploadPath)) {
                mkdir($uploadPath, 0777, true);
            }
 
-           // Start transaction
            DB::beginTransaction();
 
            $data = new Room();
@@ -39,7 +36,6 @@ class RoomController extends Controller
            $data->room_type = $request->type;
            $data->has_wifi = $request->freewifi;
 
-           // Handle main image
            if ($request->hasFile('imageroom')) {
                $image = $request->file('imageroom');
                $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
@@ -49,7 +45,6 @@ class RoomController extends Controller
 
            $data->save();
 
-           // Handle additional images
            if ($request->hasFile('room_images')) {
                foreach ($request->file('room_images') as $image) {
                    $imageName = uniqid() . '_' . time() . '.' . $image->getClientOriginalExtension();
@@ -67,7 +62,6 @@ class RoomController extends Controller
 
        } catch (\Exception $e) {
            DB::rollback();
-           // Delete uploaded files if any
            if (isset($data) && $data->image) {
                $imagePath = $uploadPath . '/' . $data->image;
                if (file_exists($imagePath)) {
@@ -101,9 +95,7 @@ class RoomController extends Controller
         $data->room_type = $request->type;
         $data->has_wifi = $request->freewifi;
 
-        // Xử lý ảnh chính
         if ($request->hasFile('imageroom')) {
-            // Xóa ảnh cũ
             $oldImage = public_path('room_images/' . $data->image);
             if (file_exists($oldImage)) {
                 unlink($oldImage);
@@ -117,7 +109,6 @@ class RoomController extends Controller
 
         $data->save();
 
-        // Xử lý thêm ảnh phụ mới
         if ($request->hasFile('room_images')) {
             foreach ($request->file('room_images') as $image) {
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
@@ -137,12 +128,10 @@ class RoomController extends Controller
     {
         $image = RoomImage::find($id);
         if ($image) {
-            // Xóa file ảnh
             $imagePath = public_path('room_images/' . $image->image_path);
             if (file_exists($imagePath)) {
                 unlink($imagePath);
             }
-            // Xóa record trong database
             $image->delete();
             return redirect()->back()->with('success', 'Ảnh đã được xóa');
         }
